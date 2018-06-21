@@ -9,6 +9,6 @@ namespace LinkAbleDocument
     public class Keyward 
     {
         public string regex;
-        public Color color;
+        public string style;
     }
 }

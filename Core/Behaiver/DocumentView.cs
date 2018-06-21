@@ -16,7 +16,7 @@ namespace LinkAbleDocument
         private ChapterListView listView;
         [SerializeField]
         private ChapterContainer container;
-
+        public event UnityAction<string> onClickItem;
         private void Awake()
         {
             RegistEvents();
@@ -25,9 +25,29 @@ namespace LinkAbleDocument
             }
 
         }
+
+        public void SetDocument(Document document)
+        {
+            this.document = document;
+            LoadDocumentUI(document);
+        }
+
+        public void SetFontSize(float fontSizeScale)
+        {
+            container.fontSizeScale = fontSizeScale;
+        }
+
         private void RegistEvents()
         {
             listView.onSelectID += OnSwitchChapter;
+            container.onClickKeyward += OnClickKeyWard;
+
+        }
+
+        private void OnClickKeyWard(string arg0)
+        {
+            if (onClickItem != null)
+                onClickItem.Invoke(arg0);
         }
 
         private void OnSwitchChapter(int arg0)
@@ -36,13 +56,8 @@ namespace LinkAbleDocument
             {
                 var chapter = document.chapters[arg0];
                 container.chapter = chapter;
+                container.keywards = document.keywards;
             }
-        }
-
-        public void SetDocument(Document document)
-        {
-            this.document = document;
-            LoadDocumentUI(document);
         }
 
         private void LoadDocumentUI(Document document)

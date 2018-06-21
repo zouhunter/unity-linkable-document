@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
 using System;
@@ -10,18 +11,23 @@ namespace LinkAbleDocument
     public class AnchorImage : MonoBehaviour
     {
         private Image m_image;
+        private Button m_button;
         private LayoutElement layoutElement;
-
+        private UnityAction<string> onClick { get; set; }
         private void Awake()
         {
             m_image = gameObject.GetComponentInChildren<Image>();
+            m_button = gameObject.GetComponentInChildren<Button>();
+            if (m_button) m_button.onClick.AddListener(OnButtonClicked);
             layoutElement = gameObject.GetComponent<LayoutElement>();
-            if (layoutElement == null)
-            {
+            if (layoutElement == null){
                 layoutElement = gameObject.AddComponent<LayoutElement>();
             }
         }
-
+        internal void RegistOnClick(UnityAction<string> onClick)
+        {
+            this.onClick = onClick;
+        }
         public void Init(SpriteContent spriteContent)
         {
             layoutElement.preferredHeight = spriteContent.preferredHeight;
@@ -84,7 +90,15 @@ namespace LinkAbleDocument
                 default:
                     break;
             }
-            m_image.transform.localPosition = Vector2.zero;
+            m_image.rectTransform.anchoredPosition = Vector2.zero;
+        }
+
+        public void OnButtonClicked()
+        {
+            if (m_image.sprite != null && onClick != null)
+            {
+                onClick.Invoke(m_image.sprite.name);
+            }
         }
     }
 }

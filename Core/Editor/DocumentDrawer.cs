@@ -46,7 +46,7 @@ namespace LinkAbleDocument
                  var rect1 = new Rect(rect.x, rect.y, rect.width * 0.5f, EditorGUIUtility.singleLineHeight);
                  var rect2 = new Rect(rect.x + rect.width * 0.5f,rect.y, rect.width * 0.5f, EditorGUIUtility.singleLineHeight);
                  EditorGUI.LabelField(rect1, "正则表达式");
-                 EditorGUI.LabelField(rect2, "显示颜色");
+                 EditorGUI.LabelField(rect2, "风格");
              };
             list_keywards.drawElementCallback = DrawKeywardElement;
 
@@ -104,9 +104,9 @@ namespace LinkAbleDocument
             var colorRect = new Rect(rect.x + rect.width * 0.5f, rect.y, rect.width * 0.5f, EditorGUIUtility.singleLineHeight);
 
             var prop_regex = prop.FindPropertyRelative("regex");
-            var prop_color = prop.FindPropertyRelative("color");
+            var prop_style = prop.FindPropertyRelative("style");
             prop_regex.stringValue = EditorGUI.TextField(regexRect, prop_regex.stringValue);
-            prop_color.colorValue = EditorGUI.ColorField(colorRect, prop_color.colorValue);
+            prop_style.stringValue = EditorGUI.TextField(colorRect, prop_style.stringValue);
 
         }
 
