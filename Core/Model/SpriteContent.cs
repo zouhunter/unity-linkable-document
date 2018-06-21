@@ -3,14 +3,15 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
+
 namespace LinkAbleDocument
 {
     [System.Serializable]
-    public class Paragraph
+    public class SpriteContent
     {
-        public ParagraphType type;
+        public Sprite sprite;
         public TextAnchor anchor;
-        public TextContent text;
-        public SpriteContent sprite;
+        public int preferredWidth;
+        public int preferredHeight;
     }
 }

@@ -5,11 +5,9 @@ using System.Collections;
 using System.Collections.Generic;
 namespace LinkAbleDocument
 {
-    [System.Serializable]
-    public class Chapter:ScriptableObject
+    public enum ParagraphType
     {
-        public string title;
-        public List<Paragraph> paragraphs;
+        Text,
+        Sprite
     }
-
 }

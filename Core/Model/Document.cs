@@ -8,8 +8,8 @@ namespace LinkAbleDocument
 {
     public class Document : ScriptableObject
     {
-        public List<Keyward> keywards;
-        public List<Chapter> chapters;
+        public List<Keyward> keywards = new List<Keyward>();
+        public List<Chapter> chapters = new List<Chapter>();
 
         public void RegistOnClick(string keyward)
         {
