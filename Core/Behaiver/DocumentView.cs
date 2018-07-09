@@ -23,7 +23,6 @@ namespace LinkAbleDocument
             if (document != null){
                 LoadDocumentUI(document);
             }
-
         }
 
         public void SetDocument(Document document)

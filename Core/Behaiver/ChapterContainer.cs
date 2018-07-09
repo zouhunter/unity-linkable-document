@@ -25,6 +25,9 @@ namespace LinkAbleDocument
         private Chapter m_chapter;
         [SerializeField]
         private float _fontSizeScale = 1;
+        [SerializeField]
+        private ScrollRect scrollRect;
+
         public Chapter chapter
         {
             get { return m_chapter; }
@@ -56,7 +59,7 @@ namespace LinkAbleDocument
             }
             set
             {
-                if(Mathf.Abs(_fontSizeScale - value) > 0.01f)
+                if (Mathf.Abs(_fontSizeScale - value) > 0.01f)
                 {
                     _fontSizeScale = value;
                     OnFontSizeScaleChanged(_fontSizeScale);
@@ -71,6 +74,7 @@ namespace LinkAbleDocument
         private Dictionary<HyperText, int> defultFontSizeDic = new Dictionary<HyperText, int>();
         private void Awake()
         {
+            if(!scrollRect) scrollRect = GetComponentInChildren<ScrollRect>();
             m_textPrefab.gameObject.SetActive(false);
             m_imagePrefab.gameObject.SetActive(false);
             if (m_chapter != null)
@@ -81,6 +85,8 @@ namespace LinkAbleDocument
 
         public void LoadChapterUI(Chapter chapter)
         {
+            scrollRect.verticalNormalizedPosition = 1;
+            scrollRect.horizontalNormalizedPosition = 0;
             if (m_title) m_title.text = chapter.title;
             //if (layoutGroup) layoutGroup.childAlignment = chapter.anchor;
 
@@ -93,7 +99,7 @@ namespace LinkAbleDocument
                 {
                     case ParagraphType.Text:
                         var text = GetTextFromPool();
-                        text.text = paragraph.text.text;
+                        text.text = LinkAbleDocument.DocUtil.WarpText(paragraph.text.text);
                         text.alignment = paragraph.text.anchor;
                         text.fontStyle = paragraph.text.fontStyle;
                         defultFontSizeDic[text] = paragraph.text.fontSize;
@@ -117,7 +123,8 @@ namespace LinkAbleDocument
             }
             foreach (var item in imagePools)
             {
-                item.RegistOnClick((x)=> {
+                item.RegistOnClick((x) =>
+                {
                     if (this.onClickKeyward != null)
                         onClickKeyward.Invoke(x);
                 });
@@ -129,14 +136,14 @@ namespace LinkAbleDocument
             if (keywards == null) return;
             foreach (var keyward in keywards)
             {
-                SetClickAbleText(text, keyward.regex, keyward.style);
+                SetClickAbleText(text, DocUtil.WarpText(keyward.regex), keyward.style);
             }
         }
 
         private void OnClickText(HyperText arg0, HyperText.LinkInfo arg1)
         {
             if (this.onClickKeyward != null)
-                onClickKeyward.Invoke(arg1.Name);
+                onClickKeyward.Invoke(DocUtil.UnWarpText( arg1.Name));
         }
 
         private void SetClickAbleText(HyperText text, string regex, string style)
@@ -177,6 +184,10 @@ namespace LinkAbleDocument
                 SetTextItemClickEvent(text, keywards);
                 textPools.Add(text);
             }
+            else
+            {
+                text.transform.SetAsLastSibling();
+            }
             text.gameObject.SetActive(true);
             return text;
         }
@@ -198,6 +209,10 @@ namespace LinkAbleDocument
                 image = Instantiate(m_imagePrefab);
                 image.transform.SetParent(m_parent, false);
                 imagePools.Add(image);
+            }
+            else
+            {
+                image.transform.SetAsLastSibling();
             }
             image.gameObject.SetActive(true);
             return image;

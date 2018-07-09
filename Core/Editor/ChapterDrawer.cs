@@ -123,12 +123,12 @@ namespace LinkAbleDocument
             rect_label.y += EditorGUIUtility.singleLineHeight;
             rect_content.y += EditorGUIUtility.singleLineHeight;
             EditorGUI.LabelField(rect_label, "PreferredWidth");
-            prop_width.intValue = EditorGUI.IntSlider(rect_content, prop_width.intValue,0,1600);
+            prop_width.intValue = EditorGUI.IntSlider(rect_content, prop_width.intValue,0,16000);
 
             rect_label.y += EditorGUIUtility.singleLineHeight;
             rect_content.y += EditorGUIUtility.singleLineHeight;
             EditorGUI.LabelField(rect_label, "PreferredHeight");
-            prop_height.intValue = EditorGUI.IntSlider(rect_content, prop_height.intValue,0,800);
+            prop_height.intValue = EditorGUI.IntSlider(rect_content, prop_height.intValue,0,8000);
         }
 
         private void DrawTextContent(Rect rect, SerializedProperty prop_textContent)
